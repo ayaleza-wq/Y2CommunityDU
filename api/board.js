@@ -11,6 +11,8 @@ const send = (res, status, body) => {
 };
 
 export default async function handler(req, res) {
+  if (!store.hasDatabase)
+    return send(res, 503, { error: "The board isn't connected to its database yet. In Vercel: Storage → connect Upstash Redis to this project, then redeploy." });
   try {
     if (req.method === "GET") {
       const code = store.normCode(req.query.code);
@@ -88,7 +90,7 @@ export default async function handler(req, res) {
         return send(res, 400, { error: "Unknown action" });
     }
   } catch (e) {
-    console.error(e);
+    console.error("[board]", req.method, e && e.stack || e);
     return send(res, 500, { error: "Something went wrong. Try again." });
   }
 }
