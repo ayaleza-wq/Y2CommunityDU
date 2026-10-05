@@ -1,0 +1,787 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>The Problems and My Community</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@400;500;700&family=Mulish:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#004658;
+  --navy-deep:#09313C;
+  --navy-line:rgba(254,251,244,0.15);
+  --cream:#FEFBF4;
+  --cream-soft:#F4EFE5;
+  --cream-edge:#EBE6DA;
+  --teal:#42B6B4;
+  --teal-press:#3AA4A2;
+  --muted:rgba(254,251,244,0.62);
+  --slab:"Roboto Slab",Georgia,"Times New Roman",serif;
+  --sans:"Mulish","Helvetica Neue",Arial,sans-serif;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){ --navy:#00303C; } }
+:root[data-theme="dark"]{ --navy:#00303C; }
+
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-padding-top:env(safe-area-inset-top,0px);-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--navy);color:var(--cream);font-family:var(--sans);
+  font-size:15px;line-height:1.35;letter-spacing:-0.01em}
+h1,h2,h3,label,button,.slab{font-family:var(--slab);letter-spacing:-0.01em}
+
+.wrap{max-width:900px;margin:0 auto;padding:24px 20px 56px}
+@media (min-width:760px){ .wrap{padding:36px 28px 72px} }
+
+.masthead{display:flex;align-items:baseline;gap:12px;padding-bottom:12px;border-bottom:1px solid var(--navy-line)}
+.mark{font-family:var(--slab);font-weight:700;font-size:20px;line-height:1}
+.masthead .ctx{font-size:12px;color:var(--muted)}
+.masthead .right{margin-left:auto;font-size:12px;color:var(--muted)}
+
+h1{font-size:24px;font-weight:700;line-height:1.1;margin:22px 0 6px}
+@media (min-width:760px){ h1{font-size:30px} }
+h2.sub{font-size:18px;font-weight:700;margin:0 0 4px}
+.lede{max-width:60ch;color:var(--muted);margin:0 0 24px;font-size:14px;line-height:1.45}
+
+input[type=text]{width:100%;font-family:var(--sans);font-size:15px;color:var(--navy);
+  background:var(--cream);border:1px solid var(--cream-edge);border-radius:8px;padding:10px 12px}
+input::placeholder{color:#8a8578}
+input:focus-visible,button:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--teal);outline-offset:2px}
+.rule{height:1px;background:var(--navy-line);border:0;margin:28px 0}
+
+.row{display:flex;gap:10px;margin-bottom:10px;align-items:center}
+.row .swatch{width:14px;height:14px;border-radius:3px;flex:none}
+.row .idx{font-family:var(--slab);font-size:12px;color:var(--muted);width:14px;flex:none}
+.row input{flex:1 1 160px;min-width:0}
+.colhead{display:flex;gap:10px;font-family:var(--slab);font-size:11px;color:var(--muted);margin:0 0 6px 24px}
+.colhead span{flex:1 1 160px}
+@media (max-width:560px){
+  .row{flex-wrap:wrap}
+  .row input{flex:1 1 100%}
+  .colhead{display:none}
+}
+
+button{font-size:15px;font-weight:700;border-radius:8px;cursor:pointer;border:1px solid transparent;
+  transition:background 120ms cubic-bezier(.2,.7,.2,1),transform 120ms}
+button:active{transform:scale(.98)}
+.btn-primary{background:var(--teal);color:var(--navy-deep);padding:12px 22px}
+.btn-primary:hover{background:var(--teal-press)}
+.btn-primary[disabled]{background:transparent;color:var(--muted);border-color:var(--navy-line);cursor:not-allowed;transform:none}
+.btn-quiet{background:transparent;color:var(--cream);border-color:var(--navy-line);padding:9px 15px;font-size:14px}
+.btn-quiet:hover{background:rgba(254,251,244,0.06)}
+.btn-text{background:transparent;color:var(--muted);border:0;padding:8px 0;font-size:13px;font-family:var(--slab);
+  text-decoration:underline;text-underline-offset:3px}
+.btn-text:hover{color:var(--cream)}
+.actions{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin-top:26px}
+.hint{font-size:12px;color:var(--muted);margin-top:10px}
+.hint.warn{color:var(--teal)}
+
+/* ---------- board ---------- */
+.instruct{background:var(--navy-deep);border-radius:8px;padding:12px 16px;margin-bottom:20px;
+  display:flex;gap:12px;align-items:center;flex-wrap:wrap;font-size:14px}
+.instruct .now{font-family:var(--slab);font-weight:700;color:var(--teal)}
+.instruct .count{margin-left:auto;font-size:12px;color:var(--muted);font-family:var(--slab)}
+
+.board{background:var(--cream);color:var(--navy);border-radius:8px;padding:18px 16px}
+@media (min-width:760px){ .board{padding:26px 24px} }
+
+.lane{padding:2px 0 6px}
+.lane + .lane{border-top:1px solid var(--cream-edge)}
+.lane .who{font-family:var(--slab);font-size:12px;color:#6F7E84;padding-top:12px}
+.spectrum{display:flex;align-items:center;gap:10px}
+.spectrum .cap{font-family:var(--slab);font-weight:700;font-size:13px;color:#4a5a60;flex:none}
+.barwrap{position:relative;flex:1;height:112px;cursor:crosshair;touch-action:none;min-width:0}
+.barwrap.armed:hover .bar{filter:brightness(1.06)}
+.bar{position:absolute;left:0;right:0;top:40px;height:34px;display:block}
+.bar svg{width:100%;height:100%;display:block}
+.bar-label{position:absolute;left:0;right:0;top:40px;height:34px;display:flex;align-items:center;justify-content:center;
+  font-family:var(--slab);font-weight:700;font-size:14px;color:#1a1a1a;pointer-events:none;padding:0 30px;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.dot{position:absolute;width:24px;height:24px;margin-left:-12px;border-radius:50%;border:2px solid var(--cream);
+  cursor:grab;touch-action:none}
+.dot.live{cursor:grabbing}
+.dot.sel{box-shadow:0 0 0 2px var(--navy-deep)}
+
+.tray{display:flex;flex-wrap:wrap;gap:10px;margin-top:20px;padding-top:18px;border-top:1px solid var(--cream-edge)}
+.chip{position:relative;border-radius:8px;padding:11px 13px;min-width:132px;max-width:200px;flex:1 1 132px;
+  color:var(--navy-deep);text-align:left;font-family:var(--slab);border:2px solid transparent;cursor:pointer}
+.chip.sel{border-color:var(--navy-deep)}
+.chip .t{font-size:14px;font-weight:700;line-height:1.2;display:block}
+.chip .p{font-size:11px;font-weight:400;opacity:.75;display:block;margin-top:4px}
+.chip .x{position:absolute;top:4px;right:6px;font-size:14px;line-height:1;opacity:.55;background:none;border:0;
+  padding:2px 4px;cursor:pointer;color:inherit;font-weight:700}
+.chip .x:hover{opacity:1}
+
+.presenting .instruct,.presenting .tray .x,.presenting .toolbar .edit{display:none}
+.presenting .lede{display:none}
+
+.toolbar{display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-top:22px}
+.hide{display:none}
+@media (prefers-reduced-motion: reduce){ *{transition:none!important} }
+/* ---------- shared groups ---------- */
+.conn{margin-left:auto;font-size:12px;color:var(--muted);font-family:var(--slab)}
+.conn.bad{color:#E8B54A}
+.card{background:var(--navy-deep);border-radius:8px;padding:16px 18px;margin-bottom:16px}
+.card h2.sub{margin-bottom:10px}
+.split{display:grid;gap:16px}
+@media (min-width:760px){ .split{grid-template-columns:1fr 1fr} }
+.field{display:block;font-family:var(--slab);font-size:12px;color:var(--muted);margin:0 0 6px}
+.stack > * + *{margin-top:12px}
+.codebox{display:flex;flex-wrap:wrap;align-items:center;gap:14px 22px}
+.code-big{font-family:var(--slab);font-weight:700;font-size:40px;letter-spacing:.14em;color:var(--teal);line-height:1}
+.codebox .link{font-size:13px;color:var(--muted);word-break:break-all}
+#qr{background:#fff;padding:10px;border-radius:8px;width:max-content}
+#qr img,#qr canvas{display:block}
+.list{list-style:none;margin:0;padding:0}
+.list li{display:flex;gap:10px;align-items:baseline;padding:7px 0;border-top:1px solid var(--navy-line);font-size:14px}
+.list li:first-child{border-top:0}
+.list .sw{width:12px;height:12px;border-radius:50%;flex:none;align-self:center}
+.list .by{margin-left:auto;font-size:12px;color:var(--muted);flex:none}
+.list .empty{color:var(--muted)}
+.mine-row{display:flex;gap:8px;align-items:center;margin-bottom:8px}
+.mine-row input{flex:1;min-width:0}
+.icon-btn{background:transparent;color:var(--muted);border:1px solid var(--navy-line);border-radius:8px;padding:9px 11px;font-size:13px}
+.icon-btn:hover{color:var(--cream)}
+.waiting{font-size:14px;color:var(--muted);font-family:var(--slab)}
+.err{color:#E8B54A;font-size:13px;margin-top:8px;min-height:1em}
+
+.instruct .me-sw{width:14px;height:14px;border-radius:50%;flex:none}
+.lane .q{font-family:var(--slab);font-weight:700;font-size:15px;color:var(--navy);padding-top:14px;line-height:1.25}
+.lane .q .n{color:#6F7E84;font-weight:400;margin-right:6px}
+.lane .peek{font-size:12px;color:#6F7E84;min-height:16px;font-family:var(--slab)}
+.barwrap.view{cursor:default}
+.dot{display:flex;align-items:center;justify-content:center;font-family:var(--slab);font-weight:700;font-size:11px;
+  color:var(--navy-deep);cursor:default}
+.dot.mine{cursor:grab;box-shadow:0 0 0 2px var(--navy-deep);z-index:2}
+.dot.mine.live{cursor:grabbing}
+.dot .x{position:absolute;top:-15px;right:-15px;width:22px;height:22px;border-radius:50%;padding:0;
+  background:var(--navy-deep);color:var(--cream);border:2px solid var(--cream);font-size:13px;line-height:1;
+  display:flex;align-items:center;justify-content:center;cursor:pointer}
+.chip{cursor:default}
+.chip.me{border-color:var(--navy-deep)}
+.chip .f{font-size:11px;opacity:.75;display:block;margin-top:2px}
+.presenting .dot.mine{box-shadow:none}
+.presenting .dot .x,.presenting .chip.me{border-color:transparent}
+.presenting .dot .x{display:none}
+</style>
+</head>
+<body>
+<div class="wrap" id="root">
+
+  <div class="masthead">
+    <span class="mark">meet</span>
+    <span class="ctx">Y2 &middot; The Problems and My Community</span>
+    <span class="conn" id="conn"></span>
+  </div>
+
+  <!-- ===== START ===== -->
+  <section id="start" class="hide">
+    <h1>Open your group's board</h1>
+    <p class="lede">One person opens the group and shares the code. Everyone else joins on their own phone or laptop: you each add your person and your problems, then place your person on every problem's spectrum, together and live.</p>
+    <div class="split">
+      <div class="card stack">
+        <h2 class="sub">Starting the group?</h2>
+        <p class="lede" style="margin:0">You'll get a code and a QR to share with your group.</p>
+        <div><button type="button" class="btn-primary" id="create">Open a new group</button></div>
+        <p class="err" id="create-err"></p>
+      </div>
+      <div class="card stack">
+        <h2 class="sub">Got a code?</h2>
+        <div><label class="field" for="start-code">Group code</label>
+          <input type="text" id="start-code" autocomplete="off" autocapitalize="characters" maxlength="5" placeholder="e.g. K7MPQ"></div>
+        <div><button type="button" class="btn-quiet" id="start-join">Join this group</button></div>
+        <p class="err" id="start-err"></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== JOIN ===== -->
+  <section id="join" class="hide">
+    <h1>Join group <span id="join-code" style="color:var(--teal)"></span></h1>
+    <p class="lede" id="join-lede">Type your first name so the group knows whose dots are whose.</p>
+    <div class="card stack" style="max-width:440px">
+      <div><label class="field" for="join-name">Your first name</label>
+        <input type="text" id="join-name" autocomplete="given-name" maxlength="30"></div>
+      <div class="actions" style="margin-top:4px">
+        <button type="button" class="btn-primary" id="join-go">Join</button>
+        <button type="button" class="btn-text hide" id="join-watch">Just watch from this screen</button>
+        <button type="button" class="btn-text" id="join-back">Use a different code</button>
+      </div>
+      <p class="err" id="join-err"></p>
+    </div>
+  </section>
+
+  <!-- ===== COLLECT ===== -->
+  <section id="collect" class="hide">
+    <h1>Fill in your part</h1>
+    <p class="lede">Everyone fills this in on their own device. You'll see the group's answers come in below.</p>
+
+    <div class="card codebox">
+      <div><span class="field">Group code</span><span class="code-big" id="c-code"></span></div>
+      <div class="link" id="c-link"></div>
+      <button type="button" class="btn-text" id="c-qr-toggle">Show QR</button>
+      <div id="qr" class="hide"></div>
+    </div>
+
+    <div class="split" id="c-mine">
+      <div class="card stack">
+        <h2 class="sub">Your person</h2>
+        <p class="lede" style="margin:0">The friend, family member or neighbour you picked in the reflection. A first name or a role ("my aunt") is enough.</p>
+        <div><label class="field" for="me-name">Person</label><input type="text" id="me-name" maxlength="40" autocomplete="off"></div>
+        <div><label class="field" for="me-comm">Their community</label><input type="text" id="me-comm" maxlength="60" autocomplete="off"></div>
+        <p class="hint" id="me-saved"></p>
+      </div>
+      <div class="card">
+        <h2 class="sub">Your problems</h2>
+        <p class="lede" style="margin:0 0 12px">One line per problem you brought. Everyone in the group will place their person on every problem.</p>
+        <div id="my-problems"></div>
+        <div class="mine-row">
+          <input type="text" id="new-problem" maxlength="120" autocomplete="off" placeholder="Add a problem">
+          <button type="button" class="btn-quiet" id="add-problem">Add</button>
+        </div>
+        <p class="err" id="prob-err"></p>
+      </div>
+    </div>
+
+    <div class="split">
+      <div class="card">
+        <h2 class="sub">Who's here</h2>
+        <ul class="list" id="c-members"></ul>
+      </div>
+      <div class="card">
+        <h2 class="sub">All the problems</h2>
+        <ul class="list" id="c-problems"></ul>
+      </div>
+    </div>
+
+    <div class="actions">
+      <button type="button" class="btn-primary hide" id="to-place">Everyone's in, start placing</button>
+      <span class="waiting hide" id="c-wait">Waiting for the person who opened the group to start the board.</span>
+      <button type="button" class="btn-text" id="leave-1">Leave this group on this device</button>
+    </div>
+    <p class="err" id="phase-err"></p>
+  </section>
+
+  <!-- ===== BOARD ===== -->
+  <section id="board-view" class="hide">
+    <h1>Your group's board</h1>
+    <p class="lede" id="board-lede">For each problem, place your person: how easy or difficult would it be for them to challenge the status quo of this problem? Click a spectrum to drop your dot, drag it to move it, and tap &times; to take it off. Everyone's dots show up live.</p>
+
+    <div class="instruct" id="instruct">
+      <span class="me-sw" id="me-sw"></span><span>You're placing:</span><span class="now" id="now-placing"></span>
+      <span class="count" id="placed-count"></span>
+    </div>
+
+    <div class="board">
+      <div id="lanes"></div>
+      <div class="tray" id="tray"></div>
+    </div>
+
+    <div class="toolbar">
+      <button type="button" class="btn-quiet" id="present">Presentation view</button>
+      <button type="button" class="btn-quiet edit hide" id="to-collect">Back to filling in</button>
+      <button type="button" class="btn-text edit hide" id="clear-mine">Take all my dots off</button>
+      <button type="button" class="btn-text edit" id="leave-2">Leave this group on this device</button>
+    </div>
+  </section>
+
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js" defer></script>
+<script>
+(function(){
+  var API = "/api/board", POLL_MS = 2000;
+  var $ = function(id){ return document.getElementById(id); };
+
+  var S = {
+    code:null, memberId:null, memberToken:null, hostToken:null,
+    board:null, myMarks:{}, marksLoaded:false, selectedLane:null,
+    presenting:false, lanesSig:"", myProbSig:"", personaLoaded:false, timer:null, inFlight:false
+  };
+
+  /* ---------- this device's seat (survives a refresh) ---------- */
+  function seatKey(code){ return "meet-board:" + code; }
+  function saveSeat(){
+    try {
+      localStorage.setItem(seatKey(S.code), JSON.stringify({ memberId:S.memberId, memberToken:S.memberToken, hostToken:S.hostToken }));
+      localStorage.setItem("meet-board:last", S.code);
+    } catch(e){}
+  }
+  function loadSeat(code){
+    try { return JSON.parse(localStorage.getItem(seatKey(code)) || "null") || {}; } catch(e){ return {}; }
+  }
+  function dropSeat(code){
+    try { localStorage.removeItem(seatKey(code)); localStorage.removeItem("meet-board:last"); } catch(e){}
+  }
+  function lastCode(){ try { return localStorage.getItem("meet-board:last"); } catch(e){ return null; } }
+
+  /* ---------- server ---------- */
+  function post(action, data){
+    var body = Object.assign({ action:action, code:S.code, memberId:S.memberId, memberToken:S.memberToken, hostToken:S.hostToken }, data || {});
+    return fetch(API, { method:"POST", headers:{ "Content-Type":"application/json" }, body:JSON.stringify(body) })
+      .then(function(r){ return r.json().catch(function(){ return {}; }).then(function(j){
+        if (!r.ok) throw new Error(j.error || "Something went wrong. Try again.");
+        return j;
+      }); });
+  }
+  function fetchBoard(code){
+    return fetch(API + "?code=" + encodeURIComponent(code), { cache:"no-store" }).then(function(r){
+      if (r.status === 404) return null;
+      if (!r.ok) throw new Error("offline");
+      return r.json();
+    });
+  }
+  function normCode(c){ return String(c || "").toUpperCase().replace(/[^A-Z0-9]/g, "").slice(0, 5); }
+
+  /* ---------- views ---------- */
+  function show(which){
+    ["start","join","collect","board-view"].forEach(function(id){ $(id).classList.toggle("hide", id !== which); });
+  }
+  function setUrl(code){
+    var u = new URL(location.href);
+    if (code) u.searchParams.set("g", code); else u.searchParams.delete("g");
+    history.replaceState(null, "", u.toString());
+  }
+  function joinUrl(){ return location.origin + location.pathname + "?g=" + S.code; }
+  function conn(text, bad){ $("conn").textContent = text || ""; $("conn").classList.toggle("bad", !!bad); }
+
+  function goStart(msg){
+    stopPolling();
+    S.code = null; S.memberId = S.memberToken = S.hostToken = null; S.board = null;
+    setUrl(null); conn("");
+    $("start-err").textContent = msg || "";
+    show("start");
+  }
+  function goJoin(code){
+    S.code = code;
+    $("join-code").textContent = code;
+    $("join-watch").classList.toggle("hide", !S.hostToken);
+    $("join-lede").textContent = S.hostToken
+      ? "Your group is open. Share the code " + code + " with the group. Join it yourself to place your own person, or just watch from this screen."
+      : "Type your first name so the group knows whose dots are whose.";
+    $("join-err").textContent = "";
+    show("join");
+    setTimeout(function(){ $("join-name").focus(); }, 0);
+  }
+  function enterGroup(){
+    setUrl(S.code); saveSeat();
+    S.marksLoaded = false; S.personaLoaded = false; S.lanesSig = ""; S.myProbSig = "";
+    $("c-code").textContent = S.code;
+    $("c-link").textContent = joinUrl();
+    $("qr").innerHTML = ""; $("qr").classList.add("hide"); $("c-qr-toggle").textContent = "Show QR";
+    startPolling();
+  }
+
+  /* ---------- polling ---------- */
+  function startPolling(){ stopPolling(); tick(); S.timer = setInterval(tick, POLL_MS); }
+  function stopPolling(){ if (S.timer) clearInterval(S.timer); S.timer = null; }
+  function tick(){
+    if (S.inFlight || !S.code) return;
+    S.inFlight = true;
+    var code = S.code;
+    fetchBoard(code).then(function(board){
+      S.inFlight = false;
+      if (code !== S.code) return;
+      if (!board){ dropSeat(code); goStart("That group has closed or expired. Open a new one."); return; }
+      if (S.memberId && !board.members[S.memberId]){ S.memberId = S.memberToken = null; saveSeat(); }
+      if (!S.memberId && !S.hostToken){ stopPolling(); goJoin(code); return; }
+      S.board = board;
+      conn("Live · " + Object.keys(board.members).length + " joined");
+      render();
+    }).catch(function(){ S.inFlight = false; conn("Reconnecting…", true); });
+  }
+
+  function me(){ return S.board && S.memberId ? S.board.members[S.memberId] : null; }
+  function isHost(){ return !!S.hostToken; }
+  function label(m){ return (m.persona && m.persona.name) || m.firstName; }
+  // "My grandmother" -> "G", so the dots in a group don't all read "M"
+  function initial(m){ return (label(m) || "?").trim().replace(/^my\s+/i, "").charAt(0).toUpperCase() || "?"; }
+  function membersInOrder(){
+    return Object.values(S.board.members).sort(function(a, b){ return a.at - b.at; });
+  }
+
+  function render(){
+    if (!S.board) return;
+    if (S.board.phase === "place"){ show("board-view"); renderBoard(); }
+    else { show("collect"); renderCollect(); }
+  }
+
+  /* ---------- collect ---------- */
+  function renderCollect(){
+    var m = me();
+    $("c-mine").classList.toggle("hide", !m);
+    $("to-place").classList.toggle("hide", !isHost());
+    $("to-place").disabled = !S.board.problems.length;
+    $("c-wait").classList.toggle("hide", isHost());
+
+    if (m && !S.personaLoaded){
+      $("me-name").value = m.persona.name || "";
+      $("me-comm").value = m.persona.community || "";
+      S.personaLoaded = true;
+    }
+
+    // the group so far
+    var ul = $("c-members"); ul.innerHTML = "";
+    membersInOrder().forEach(function(x){
+      var li = document.createElement("li");
+      li.innerHTML = '<span class="sw"></span><span class="t"></span><span class="by"></span>';
+      li.querySelector(".sw").style.background = x.color;
+      li.querySelector(".t").textContent = x.persona.name
+        ? x.persona.name + (x.persona.community ? " · " + x.persona.community : "")
+        : "still choosing their person…";
+      if (!x.persona.name) li.querySelector(".t").className = "t empty";
+      li.querySelector(".by").textContent = x.firstName + (x.id === S.memberId ? " (you)" : "");
+      ul.appendChild(li);
+    });
+    if (!ul.children.length) ul.innerHTML = '<li class="empty">Nobody yet. Share the code.</li>';
+
+    var pl = $("c-problems"); pl.innerHTML = "";
+    S.board.problems.forEach(function(q, i){
+      var li = document.createElement("li");
+      li.innerHTML = '<span class="t"></span><span class="by"></span>';
+      li.querySelector(".t").textContent = (i + 1) + ". " + q.text;
+      var who = S.board.members[q.by];
+      li.querySelector(".by").textContent = who ? who.firstName : "";
+      pl.appendChild(li);
+    });
+    if (!pl.children.length) pl.innerHTML = '<li class="empty">No problems yet.</li>';
+
+    renderMyProblems();
+  }
+
+  function renderMyProblems(){
+    if (!S.memberId) return;
+    var mine = S.board.problems.filter(function(q){ return q.by === S.memberId; });
+    var sig = mine.map(function(q){ return q.id + ":" + q.text; }).join("|");
+    var box = $("my-problems");
+    if (sig === S.myProbSig || box.contains(document.activeElement)) return;
+    S.myProbSig = sig;
+    box.innerHTML = "";
+    mine.forEach(function(q){
+      var row = document.createElement("div");
+      row.className = "mine-row";
+      row.innerHTML = '<input type="text" maxlength="120" autocomplete="off" aria-label="Your problem">' +
+                      '<button type="button" class="icon-btn" title="Remove this problem">Remove</button>';
+      var inp = row.querySelector("input");
+      inp.value = q.text;
+      function commit(){
+        var t = inp.value.trim();
+        if (!t || t === q.text) { inp.value = q.text; return; }
+        post("editProblem", { problemId:q.id, text:t }).then(tick).catch(function(e){ $("prob-err").textContent = e.message; });
+      }
+      inp.addEventListener("blur", commit);
+      inp.addEventListener("keydown", function(e){ if (e.key === "Enter") inp.blur(); });
+      row.querySelector("button").addEventListener("click", function(){
+        post("removeProblem", { problemId:q.id }).then(function(){ S.myProbSig = ""; tick(); })
+          .catch(function(e){ $("prob-err").textContent = e.message; });
+      });
+      box.appendChild(row);
+    });
+  }
+
+  var personaTimer = null;
+  function queuePersona(){
+    $("me-saved").textContent = "Saving…";
+    clearTimeout(personaTimer);
+    personaTimer = setTimeout(function(){
+      post("persona", { name:$("me-name").value, community:$("me-comm").value })
+        .then(function(){ $("me-saved").textContent = "Saved"; tick(); })
+        .catch(function(e){ $("me-saved").textContent = e.message; });
+    }, 600);
+  }
+  $("me-name").addEventListener("input", queuePersona);
+  $("me-comm").addEventListener("input", queuePersona);
+
+  function addProblem(){
+    var t = $("new-problem").value.trim();
+    if (!t) return;
+    $("prob-err").textContent = "";
+    post("addProblem", { text:t }).then(function(){ $("new-problem").value = ""; S.myProbSig = ""; tick(); })
+      .catch(function(e){ $("prob-err").textContent = e.message; });
+  }
+  $("add-problem").addEventListener("click", addProblem);
+  $("new-problem").addEventListener("keydown", function(e){ if (e.key === "Enter") addProblem(); });
+
+  $("c-qr-toggle").addEventListener("click", function(){
+    var box = $("qr"), open = box.classList.contains("hide");
+    box.classList.toggle("hide", !open);
+    this.textContent = open ? "Hide QR" : "Show QR";
+    if (open && !box.children.length){
+      if (window.QRCode) new QRCode(box, { text:joinUrl(), width:180, height:180 });
+      else box.textContent = "QR unavailable. Share the link instead.";
+    }
+  });
+
+  function setPhase(phase){
+    $("phase-err").textContent = "";
+    post("phase", { phase:phase }).then(tick).catch(function(e){ $("phase-err").textContent = e.message; });
+  }
+  $("to-place").addEventListener("click", function(){ setPhase("place"); });
+  $("to-collect").addEventListener("click", function(){ setPhase("collect"); });
+
+  /* ---------- board ---------- */
+  function renderBoard(){
+    var m = me();
+    if (m && !S.marksLoaded){ S.myMarks = Object.assign({}, S.board.marks[S.memberId] || {}); S.marksLoaded = true; }
+
+    $("instruct").classList.toggle("hide", !m);
+    $("clear-mine").classList.toggle("hide", !m);
+    $("to-collect").classList.toggle("hide", !isHost());
+    if (m){
+      $("me-sw").style.background = m.color;
+      $("now-placing").textContent = label(m) + (m.persona.community ? " (" + m.persona.community + ")" : "");
+    }
+
+    var sig = S.board.problems.map(function(q){ return q.id + ":" + q.text; }).join("|");
+    if (sig !== S.lanesSig){ S.lanesSig = sig; buildLanes(); }
+    else Array.prototype.forEach.call(document.querySelectorAll(".barwrap"), function(w){ drawDots(w, w.dataset.qid); });
+
+    renderTray();
+    renderCount();
+  }
+
+  function buildLanes(){
+    var lanes = $("lanes");
+    lanes.innerHTML = "";
+    if (!S.board.problems.length){ lanes.innerHTML = '<p class="lane q">No problems on the board yet.</p>'; return; }
+    S.board.problems.forEach(function(q, i){
+      var lane = document.createElement("div");
+      lane.className = "lane";
+      lane.innerHTML =
+        '<div class="q"><span class="n"></span><span class="t"></span></div>' +
+        '<div class="spectrum">' +
+          '<span class="cap">Easy</span>' +
+          '<div class="barwrap" tabindex="0" role="group">' +
+            '<div class="bar">' +
+              '<svg viewBox="0 0 1000 34" preserveAspectRatio="none" aria-hidden="true">' +
+                '<path d="M 2 17 L 20 2 L 20 9 L 980 9 L 980 2 L 998 17 L 980 32 L 980 25 L 20 25 L 20 32 Z" ' +
+                'fill="#D2D6D7" stroke="#000000" stroke-width="1.5" stroke-linejoin="round" ' +
+                'vector-effect="non-scaling-stroke"/>' +
+              '</svg>' +
+            '</div>' +
+          '</div>' +
+          '<span class="cap">Difficult</span>' +
+        '</div>' +
+        '<div class="peek"></div>';
+      lane.querySelector(".n").textContent = (i + 1) + ".";
+      lane.querySelector(".t").textContent = q.text;
+      var wrap = lane.querySelector(".barwrap");
+      wrap.setAttribute("aria-label", "Spectrum for: " + q.text);
+      wrap.dataset.qid = q.id;
+      if (!S.memberId) wrap.classList.add("view");
+      drawDots(wrap, q.id);
+      wireLane(wrap, q.id, lane.querySelector(".peek"));
+      lanes.appendChild(lane);
+    });
+  }
+
+  function marksFor(qid){
+    // others from the server, mine from this device (it's the source of truth for my own dots)
+    var out = [];
+    membersInOrder().forEach(function(m){
+      var v = m.id === S.memberId ? S.myMarks[qid] : (S.board.marks[m.id] || {})[qid];
+      if (v !== undefined && v !== null) out.push({ m:m, v:v });
+    });
+    out.sort(function(a, b){ return (a.m.id === S.memberId) - (b.m.id === S.memberId); });
+    return out;
+  }
+
+  function drawDots(wrap, qid){
+    Array.prototype.forEach.call(wrap.querySelectorAll(".dot"), function(d){ d.remove(); });
+    var offsets = [0, -26, 26, -52, 52], placed = [];
+    marksFor(qid).forEach(function(e){
+      var off = 0;
+      for (var k = 0; k < offsets.length; k++){
+        var cand = offsets[k];
+        if (!placed.some(function(o){ return Math.abs(o.v - e.v) < 6 && o.off === cand; })) { off = cand; break; }
+      }
+      placed.push({ v:e.v, off:off });
+      var mine = e.m.id === S.memberId;
+      var d = document.createElement("div");
+      d.className = "dot" + (mine ? " mine" : "");
+      d.style.left = e.v + "%";
+      d.style.top = (45 + off) + "px";
+      d.style.background = e.m.color;
+      d.dataset.mid = e.m.id;
+      d.textContent = initial(e.m);
+      d.title = label(e.m) + (e.m.persona.community ? " (" + e.m.persona.community + ")" : "") + " · " + e.m.firstName;
+      if (mine && S.selectedLane === qid){
+        var x = document.createElement("button");
+        x.type = "button"; x.className = "x"; x.innerHTML = "&times;";
+        x.title = "Take my dot off this problem"; x.setAttribute("aria-label", x.title);
+        d.appendChild(x);
+      }
+      wrap.appendChild(d);
+    });
+  }
+
+  var markTimers = {};
+  function queueMark(qid){
+    clearTimeout(markTimers[qid]);
+    markTimers[qid] = setTimeout(function(){
+      var v = S.myMarks[qid];
+      post("mark", { problemId:qid, pct:(v === undefined ? null : v) }).catch(function(){ conn("Couldn't save. Retrying…", true); setTimeout(function(){ queueMark(qid); }, 1500); });
+    }, 300);
+  }
+  function removeMine(wrap, qid){
+    delete S.myMarks[qid];
+    drawDots(wrap, qid); renderCount(); renderTray(); queueMark(qid);
+  }
+
+  function wireLane(wrap, qid, peek){
+    var dragging = false;
+    function pctFrom(e){
+      var r = wrap.getBoundingClientRect();
+      return Math.max(1.5, Math.min(98.5, ((e.clientX - r.left) / r.width) * 100));
+    }
+    function selectHere(){
+      if (S.selectedLane === qid) return;
+      var prev = S.selectedLane; S.selectedLane = qid;
+      if (prev){ var w = document.querySelector('.barwrap[data-qid="' + prev + '"]'); if (w) drawDots(w, prev); }
+    }
+
+    wrap.addEventListener("pointerdown", function(e){
+      var t = e.target;
+      var other = t.closest && t.closest(".dot:not(.mine)");
+      if (other){
+        var m = S.board.members[other.dataset.mid];
+        peek.textContent = m ? other.title : "";
+        e.preventDefault(); return;
+      }
+      if (!S.memberId) return;
+      if (t.classList && t.classList.contains("x")){ e.preventDefault(); removeMine(wrap, qid); return; }
+      selectHere();
+      S.myMarks[qid] = pctFrom(e);
+      dragging = true;
+      wrap.setPointerCapture(e.pointerId);
+      drawDots(wrap, qid);
+      var d = wrap.querySelector(".dot.mine"); if (d) d.classList.add("live");
+      renderCount();
+      e.preventDefault();
+    });
+    wrap.addEventListener("pointermove", function(e){
+      if (!dragging) return;
+      S.myMarks[qid] = pctFrom(e);
+      var d = wrap.querySelector(".dot.mine");
+      if (d) d.style.left = S.myMarks[qid] + "%"; else drawDots(wrap, qid);
+    });
+    function end(e){
+      if (!dragging) return;
+      dragging = false;
+      try { wrap.releasePointerCapture(e.pointerId); } catch(err){}
+      drawDots(wrap, qid); renderCount(); renderTray(); queueMark(qid);
+    }
+    wrap.addEventListener("pointerup", end);
+    wrap.addEventListener("pointercancel", end);
+
+    wrap.addEventListener("keydown", function(e){
+      if (!S.memberId) return;
+      var cur = S.myMarks[qid], step = e.shiftKey ? 10 : 2;
+      if (e.key === "Delete" || e.key === "Backspace"){ e.preventDefault(); removeMine(wrap, qid); return; }
+      if (e.key === "Enter" || e.key === " ") S.myMarks[qid] = cur === undefined ? 50 : cur;
+      else if (e.key === "ArrowLeft") S.myMarks[qid] = Math.max(0, (cur === undefined ? 50 : cur) - step);
+      else if (e.key === "ArrowRight") S.myMarks[qid] = Math.min(100, (cur === undefined ? 50 : cur) + step);
+      else return;
+      e.preventDefault();
+      selectHere();
+      drawDots(wrap, qid); renderCount(); renderTray(); queueMark(qid);
+    });
+  }
+
+  function placedBy(m){
+    var src = m.id === S.memberId ? S.myMarks : (S.board.marks[m.id] || {});
+    return S.board.problems.filter(function(q){ return src[q.id] !== undefined && src[q.id] !== null; }).length;
+  }
+  function renderTray(){
+    var tray = $("tray");
+    tray.innerHTML = "";
+    var n = S.board.problems.length;
+    membersInOrder().forEach(function(m){
+      var chip = document.createElement("div");
+      chip.className = "chip" + (m.id === S.memberId ? " me" : "");
+      chip.style.background = m.color;
+      chip.innerHTML = '<span class="t"></span><span class="f"></span><span class="p"></span>';
+      chip.querySelector(".t").textContent = label(m) + (m.persona.community ? " · " + m.persona.community : "");
+      chip.querySelector(".f").textContent = m.firstName + (m.id === S.memberId ? " (you)" : "");
+      chip.querySelector(".p").textContent = "placed on " + placedBy(m) + " of " + n;
+      tray.appendChild(chip);
+    });
+  }
+  function renderCount(){
+    var m = me();
+    if (!m) return;
+    var n = S.board.problems.length, done = placedBy(m);
+    $("placed-count").textContent = done === n && n ? "All " + n + " placed. Nice." : "Placed on " + done + " of " + n + " problems";
+  }
+
+  $("clear-mine").addEventListener("click", function(){
+    Object.keys(S.myMarks).forEach(function(qid){ delete S.myMarks[qid]; queueMark(qid); });
+    renderBoard();
+    Array.prototype.forEach.call(document.querySelectorAll(".barwrap"), function(w){ drawDots(w, w.dataset.qid); });
+  });
+
+  $("present").addEventListener("click", function(){
+    S.presenting = !S.presenting;
+    $("root").classList.toggle("presenting", S.presenting);
+    this.textContent = S.presenting ? "Back to editing" : "Presentation view";
+  });
+
+  /* ---------- start / join ---------- */
+  $("create").addEventListener("click", function(){
+    var btn = this; btn.disabled = true; $("create-err").textContent = "";
+    post("create").then(function(j){
+      btn.disabled = false;
+      S.code = j.code; S.hostToken = j.hostToken; S.memberId = S.memberToken = null;
+      saveSeat(); setUrl(S.code);
+      goJoin(S.code);
+    }).catch(function(e){ btn.disabled = false; $("create-err").textContent = e.message; });
+  });
+
+  function tryCode(code, errEl){
+    code = normCode(code);
+    if (code.length !== 5){ errEl.textContent = "Codes are 5 letters and numbers."; return; }
+    errEl.textContent = "";
+    fetchBoard(code).then(function(board){
+      if (!board){ errEl.textContent = "No group with that code. Check it, or it may have expired."; return; }
+      var seat = loadSeat(code);
+      S.code = code; S.memberId = seat.memberId || null; S.memberToken = seat.memberToken || null; S.hostToken = seat.hostToken || null;
+      if (S.memberId && board.members[S.memberId]) enterGroup(); else { S.memberId = S.memberToken = null; goJoin(code); }
+    }).catch(function(){ errEl.textContent = "Can't reach the board. Check your connection."; });
+  }
+  $("start-join").addEventListener("click", function(){ tryCode($("start-code").value, $("start-err")); });
+  $("start-code").addEventListener("keydown", function(e){ if (e.key === "Enter") tryCode(this.value, $("start-err")); });
+
+  function doJoin(){
+    var name = $("join-name").value.trim();
+    if (!name){ $("join-err").textContent = "Type your first name."; return; }
+    $("join-go").disabled = true;
+    post("join", { firstName:name }).then(function(j){
+      $("join-go").disabled = false;
+      S.memberId = j.memberId; S.memberToken = j.memberToken;
+      enterGroup();
+    }).catch(function(e){ $("join-go").disabled = false; $("join-err").textContent = e.message; });
+  }
+  $("join-go").addEventListener("click", doJoin);
+  $("join-name").addEventListener("keydown", function(e){ if (e.key === "Enter") doJoin(); });
+  $("join-watch").addEventListener("click", enterGroup);
+  $("join-back").addEventListener("click", function(){ goStart(); });
+
+  function leave(){
+    if (!confirm("Leave this group on this device? Your dots stay on the board, but this device won't be able to move them any more.")) return;
+    dropSeat(S.code); goStart();
+  }
+  $("leave-1").addEventListener("click", leave);
+  $("leave-2").addEventListener("click", leave);
+
+  /* ---------- go ---------- */
+  var fromUrl = normCode(new URL(location.href).searchParams.get("g"));
+  var initial0 = fromUrl || lastCode();
+  if (initial0){ $("start-code").value = initial0; tryCode(initial0, $("start-err")); show("start"); }
+  else show("start");
+})();
+</script>
+</body>
+</html>
